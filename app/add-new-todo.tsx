@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 // import { stringify } from "querystring";
 import { useState } from "react";
 
-async function addTodo(name, refresh){
+async function addTodo(name: string, refresh: { (): void; (): void; }){
     await fetch('/api/todo/add', {
         method: "POST",
         body: JSON.stringify({name}),

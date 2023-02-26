@@ -1,17 +1,27 @@
+
 import Todo from "./todo"
+import React, {useEffect, useState} from "react";
+
+
+interface TodoType{
+    id: number;
+    name: string;
+    isDone: boolean;
+}
+
 
 const getTodos = async () => {
     let todos = await fetch(`https://json-api-topaz-omega.vercel.app/api/todo/list`);
     return todos.json();
-}
+};
 
-export default async function TodoList() {
+ const TodoList = async(): Promise<JSX.Element> => {
     const { todos } = await getTodos();
 
     return(
         <div>
             <ul style={{listStyleType: "none", padding: 0 }}>
-                {todos.map((t) => {
+                {todos.map((t: TodoType) => {
                     return(
                         
                         <li key={t.id} style={{padding: "5px 0"}}>
@@ -23,21 +33,8 @@ export default async function TodoList() {
         </div>
     );
 
-
-
-
-
-
-    // console.log(todos);
-    // return(
-    //     <div>
-    //             <ul >
-    //                 <li>New Todo 1</li>
-    //                 <li>New Todo 2</li>
-    //                 <li>New Todo 3</li>
-    //             </ul>
-
-    //         </div>
-    // );
+    
 
 }
+
+export default TodoList;
