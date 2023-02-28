@@ -1,7 +1,10 @@
 "use client";
-
+import Image from "next/image";
+import trash from "../public/trash-removebg-preview.png"
+import Link from "next/link";
 import { BlobOptions } from "buffer";
 import { useRouter } from "next/navigation";
+
 
 async function update (id: number, isDone: boolean, refresh: ()=>void):Promise<void>{
     await fetch(`/api/todo/update`, {
@@ -43,18 +46,34 @@ export default function Todo({todo}: TodoProps): JSX.Element {
 
 
     return(
-        <>
-            <label>.
+        
+        <div>
+            
+            <button 
+                name="del"
+                type="button"
+                className=""
+                onClick={handledeleteTodo}>
+                    <Image
+                        src={trash}
+                        alt="My Image"
+                        width={25}
+                        height={25}
+                    />
+            </button>
+
+            <label>-
             <input 
+                className="mx-2 shadow-sm shadow-gray-400"
                 type="checkbox" 
                 onChange={(e) => updateTodo(e.target.checked)} 
                 checked={todo.isDone}
             /></label>
             <span>{todo.name}</span>
-            <button onClick={handledeleteTodo}>
-                Delete
-            </button>
-        </>
+              
+            
+        </div>
+        
     );
 
 }

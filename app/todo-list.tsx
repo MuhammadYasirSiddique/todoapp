@@ -20,11 +20,11 @@ const getTodos = async () => {
 
     return(
         <div>
-            <ul style={{listStyleType: "none", padding: 0 }}>
+            <ul className="">
                 {todos.map((t: TodoType) => {
                     return(
                         
-                        <li key={t.id} style={{padding: "5px 0"}}>
+                        <li className="mb-1" key={t.id}>
                             <Todo todo={t} />
                         </li>
                     );
