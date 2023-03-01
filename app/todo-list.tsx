@@ -1,48 +1,40 @@
 
-'use client'
 import Todo from "./todo"
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
-interface TodoType {
-  id: number;
-  name: string;
-  isDone: boolean;
+
+interface TodoType{
+    id: number;
+    name: string;
+    isDone: boolean;
 }
 
+
 const getTodos = async () => {
-  let todos = await fetch(`./api/todo/list`);
-  return todos.json();
+    let todos = await fetch(`https://json-api-topaz-omega.vercel.app/api/todo/list`);
+    return todos.json();
 };
 
-const TodoList = (): JSX.Element => {
-  const [todos, setTodos] = useState<TodoType[]>([]);
+ const TodoList = async(): Promise<JSX.Element> => {
+    const { todos } = await getTodos();
 
-  const fetchTodos = async () => {
-    const data = await getTodos();
-    setTodos(data.todos);
-  };
+    return(
+        <div>
+            <ul className="">
+                {todos.map((t: TodoType) => {
+                    return(
+                        
+                        <li className="mb-1" key={t.id}>
+                            <Todo todo={t} />
+                        </li>
+                    );
+                })}
+            </ul>
+        </div>
+    );
 
-  useEffect(() => {
-    fetchTodos();
-    const interval = setInterval(() => {
-      fetchTodos();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    
 
-  return (
-    <div>
-      <ul className="">
-        {todos.map((t: TodoType) => {
-          return (
-            <li className="mb-1" key={t.id}>
-              <Todo todo={t} />
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-};
+}
 
 export default TodoList;
