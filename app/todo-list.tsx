@@ -9,24 +9,32 @@ interface TodoType {
   isDone: boolean;
 }
 
-const getTodos = async () => {
-  let todos = await fetch(`./api/todo/list`);
+const getTodos = async (lastTodoId?: number) => {
+  let url = `./api/todo/list`;
+  if (lastTodoId !== undefined) {
+    url += `?since_id=${lastTodoId}`;
+  }
+  let todos = await fetch(url);
   return todos.json();
 };
 
 const TodoList = (): JSX.Element => {
   const [todos, setTodos] = useState<TodoType[]>([]);
+  const [lastTodoId, setLastTodoId] = useState<number | undefined>(undefined);
 
   const fetchTodos = async () => {
-    const data = await getTodos();
-    setTodos(data.todos);
+    const data = await getTodos(lastTodoId);
+    if (data.todos.length > 0) {
+      setLastTodoId(data.todos[data.todos.length - 1].id);
+      setTodos([...todos, ...data.todos]);
+    }
   };
 
   useEffect(() => {
     fetchTodos();
     const interval = setInterval(() => {
       fetchTodos();
-    }, 1000);
+    }, 500);
     return () => clearInterval(interval);
   }, []);
 
