@@ -1,6 +1,5 @@
-
-'use client'
-import Todo from "./todo"
+"use client";
+import Todo from "./todo";
 import React, { useEffect, useState } from "react";
 
 interface TodoType {
@@ -26,7 +25,7 @@ const TodoList = (): JSX.Element => {
     fetchTodos();
     const interval = setInterval(() => {
       fetchTodos();
-    }, 1000);
+    }, 1);
     return () => clearInterval(interval);
   }, []);
 
